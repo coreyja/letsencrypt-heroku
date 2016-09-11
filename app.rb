@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'dotenv'
 require 'sidekiq'
+require 'pry'
 Dotenv.load
 
 require_relative 'workers/worker'
@@ -8,7 +9,7 @@ require_relative 'workers/worker'
 get '/certificate_generation/new/:domain' do
   authenticate!
   token = SecureRandom.hex
-  Worker.perform_async(params[:domain], params[:subdomains], params[:debug], params[:app_name], token)
+  Worker.perform_async(params[:domain], params[:subdomains], false, params[:app_name], token)
   content_type :json
 
   { status_path: "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}/certificate_generation/#{token}" }.to_json
