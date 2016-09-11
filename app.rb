@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'dotenv'
 require 'sidekiq'
-require 'pry'
 Dotenv.load
 
 require_relative 'workers/worker'
